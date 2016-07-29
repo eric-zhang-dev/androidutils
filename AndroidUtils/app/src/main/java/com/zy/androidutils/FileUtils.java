@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class FiltieUl {
+public class FileUtils {
 	public static void mkFile(String filePath, boolean mkdir) throws Exception {
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();
@@ -14,38 +14,38 @@ public class FiltieUl {
 	}
 
 	/**
-	 * ��ָ����λ�ô����ļ���
-	 * 
+	 * 在指定的位置创建文件夹
+	 *
 	 * @param dirPath
-	 *            �ļ���·��
-	 * @return �������ɹ����򷵻�True����֮���򷵻�False
+	 *            文件夹路径
+	 * @return 若创建成功，则返回True；反之，则返回False
 	 */
 	public static boolean mkDir(String dirPath) {
 		return new File(dirPath).mkdirs();
 	}
 
 	/**
-	 * ɾ��ָ�����ļ�
-	 * 
+	 * 删除指定的文件
+	 *
 	 * @param filePath
-	 *            �ļ�·��
-	 * 
-	 * @return ��ɾ���ɹ����򷵻�True����֮���򷵻�False
-	 * 
+	 *            文件路径
+	 *
+	 * @return 若删除成功，则返回True；反之，则返回False
+	 *
 	 */
 	public static boolean delFile(String filePath) {
 		return new File(filePath).delete();
 	}
 
 	/**
-	 * ɾ��ָ�����ļ���
-	 * 
+	 * 删除指定的文件夹
+	 *
 	 * @param dirPath
-	 *            �ļ���·��
+	 *            文件夹路径
 	 * @param delFile
-	 *            �ļ������Ƿ�����ļ�
-	 * @return ��ɾ���ɹ����򷵻�True����֮���򷵻�False
-	 * 
+	 *            文件夹中是否包含文件
+	 * @return 若删除成功，则返回True；反之，则返回False
+	 *
 	 */
 	public static boolean delDir(String dirPath, boolean delFile) {
 		if (delFile) {
@@ -75,14 +75,14 @@ public class FiltieUl {
 	}
 
 	/**
-	 * �����ļ�/�ļ��� ��Ҫ�����ļ��и��ƣ�����Ŀ���ļ�������Դ�ļ�����
-	 * 
+	 * 复制文件/文件夹 若要进行文件夹复制，请勿将目标文件夹置于源文件夹中
+	 *
 	 * @param source
-	 *            Դ�ļ����У�
+	 *            源文件（夹）
 	 * @param target
-	 *            Ŀ���ļ����У�
+	 *            目标文件（夹）
 	 * @param isFolder
-	 *            �������ļ��и��ƣ���ΪTrue����֮ΪFalse
+	 *            若进行文件夹复制，则为True；反之为False
 	 * @throws Exception
 	 */
 	public static void copy(String source, String target, boolean isFolder)
@@ -135,14 +135,14 @@ public class FiltieUl {
 	}
 
 	/**
-	 * �ƶ�ָ�����ļ����У���Ŀ���ļ����У�
-	 * 
+	 * 移动指定的文件（夹）到目标文件（夹）
+	 *
 	 * @param source
-	 *            Դ�ļ����У�
+	 *            源文件（夹）
 	 * @param target
-	 *            Ŀ���ļ����У�
+	 *            目标文件（夹）
 	 * @param isFolder
-	 *            ��Ϊ�ļ��У���ΪTrue����֮ΪFalse
+	 *            若为文件夹，则为True；反之为False
 	 * @return
 	 * @throws Exception
 	 */
@@ -153,6 +153,28 @@ public class FiltieUl {
 			return delDir(source, true);
 		} else {
 			return delFile(source);
+		}
+	}
+	/**
+	 * 删除文件和文件夹
+	 *
+	 * @param file
+	 */
+	public static void deleteFile(File file) {
+		if (file.isFile()) {
+			file.delete();
+			return;
+		}
+		if (file.isDirectory()) {
+			File[] childFile = file.listFiles();
+			if (childFile == null || childFile.length == 0) {
+				file.delete();
+				return;
+			}
+			for (File f : childFile) {
+				deleteFile(f);
+			}
+			file.delete();
 		}
 	}
 }
